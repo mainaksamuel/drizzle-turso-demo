@@ -9,7 +9,7 @@ export async function addTask(_prevState: any, formData: FormData) {
   try {
     const data = insertTaskSchema.parse({
       title: formData.get("title"),
-      status: formData.get("status"),
+      // status: formData.get("status"),
     });
 
     const newTask = await insertTask(data);

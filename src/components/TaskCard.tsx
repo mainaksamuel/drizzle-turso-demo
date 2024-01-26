@@ -10,7 +10,6 @@ export default function TaskCard({ task }: TaskCardProps) {
   return (
     <div className="flex border-2 border-gray-400 rounded-xl justify-between p-3 hover:bg-gray-800">
       <p className="text-wrap">{task.title}</p>
-      <p className="text-wrap">{task.status}</p>
       <div className="flex space-x-4">
         <EditButton taskId={task.id} />
         <DeleteButton taskId={task.id} taskTitle={task.title} />
