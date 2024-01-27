@@ -6,7 +6,7 @@ import { z } from "zod";
 export const tasks = sqliteTable("tasks", {
   id: integer("id").primaryKey({ autoIncrement: true }).notNull(),
   title: text("title").notNull(),
-  description: text("description"),
+  description: text("description").default("").notNull(),
   status: text("status", {
     enum: ["todo", "inprogress", "done", "overdue"],
   })
@@ -18,7 +18,7 @@ export const tasks = sqliteTable("tasks", {
   updatedAt: text("updatedAt")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  deadline: text("deadline"),
+  deadline: text("deadline").default("").notNull(),
 });
 
 export type Task = typeof tasks.$inferSelect;
@@ -30,21 +30,3 @@ export const insertTaskSchema = createInsertSchema(tasks, {
 });
 
 export const selectTaskSchema = createSelectSchema(tasks);
-
-const taskPropSchema = selectTaskSchema.pick({
-  id: true,
-  title: true,
-  status: true,
-  updatedAt: true,
-});
-export type TaskListItem = z.infer<typeof taskPropSchema>;
-
-export const taskEditSchema = insertTaskSchema.pick({
-  id: true,
-  title: true,
-  description: true,
-  status: true,
-  updatedAt: true,
-  deadline: true,
-});
-export type TaskEdit = z.infer<typeof taskEditSchema>;

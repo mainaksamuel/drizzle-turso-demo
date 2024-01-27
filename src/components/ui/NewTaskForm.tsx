@@ -2,6 +2,7 @@
 
 import { useFormState, useFormStatus } from "react-dom";
 import { addTask } from "@/lib/actions";
+import { useRef } from "react";
 
 const initialState = {
   message: "",
@@ -11,9 +12,18 @@ export default function NewTaskForm() {
   const [state, formAction] = useFormState(addTask, initialState);
   const { pending } = useFormStatus();
 
+  const titleRef = useRef<HTMLFormElement>(null);
+
   return (
     <>
-      <form className="w-full" action={formAction}>
+      <form
+        ref={titleRef}
+        className="w-full"
+        action={async (formData) => {
+          formAction(formData);
+          titleRef.current?.reset();
+        }}
+      >
         <div className="flex flex-col space-y-4 border-2 border-gray-400 p-2 rounded-xl mb-2">
           <h2 className="py-2 border-b-2">New Task</h2>
           <input

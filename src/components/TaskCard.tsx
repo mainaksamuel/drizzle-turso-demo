@@ -1,9 +1,9 @@
-import { TaskListItem } from "@/db/schema/tasks";
+import { Task } from "@/db/schema/tasks";
 import EditButton from "./ui/EditButton";
 import DeleteButton from "./ui/DeleteButton";
 
 interface TaskCardProps {
-  task: TaskListItem;
+  task: Task;
 }
 
 export default function TaskCard({ task }: TaskCardProps) {

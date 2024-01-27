@@ -9,7 +9,7 @@ export default function TaskForm() {
   const isEditing = useAtomValue(isEditingAtom);
 
   return (
-    <main className="w-full p-5 sm:p-0 md:w-1/2 xl:w-1/4 ">
+    <main className="w-full p-5 sm:p-0 md:w-1/2 xl:w-1/3 ">
       {isEditing ? <EditTaskForm /> : <NewTaskForm />}
     </main>
   );

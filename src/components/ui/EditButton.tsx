@@ -1,21 +1,21 @@
 "use client";
 
-import { TaskListItem } from "@/db/schema/tasks";
+import { Task } from "@/db/schema/tasks";
 import { isEditingAtom, taskEditDataAtom } from "@/lib/atoms";
 import { useSetAtom } from "jotai";
 
-export default function EditButton({ task }: { task: TaskListItem }) {
+export default function EditButton({ task }: { task: Task }) {
   const setIsEditing = useSetAtom(isEditingAtom);
   const setTaskEditData = useSetAtom(taskEditDataAtom);
 
   const handleEdit = () => {
-    setTaskEditData((taskEdit) => ({
-      ...taskEdit,
+    setTaskEditData({
       id: task.id,
       title: task.title,
+      description: task.description,
       status: task.status,
-      updatedAt: task.updatedAt,
-    }));
+      deadline: task.deadline,
+    });
 
     setIsEditing(true);
   };

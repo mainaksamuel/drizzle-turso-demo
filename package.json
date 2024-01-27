@@ -10,6 +10,7 @@
     "generate": "drizzle-kit generate:sqlite",
     "introspect": "drizzle-kit introspect:sqlite",
     "push": "drizzle-kit push:sqlite",
+    "drop": "drizzle-kit drop",
     "studio": "drizzle-kit studio"
   },
   "dependencies": {
