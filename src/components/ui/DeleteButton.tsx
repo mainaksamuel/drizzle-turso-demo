@@ -20,7 +20,7 @@ export default function DeleteButton({ taskId, taskTitle }: DeleteButtonProps) {
     <form action={formAction}>
       <input name="id" type="hidden" value={taskId} />
       <input name="task" type="hidden" value={taskTitle} />
-      <div className="cursor-pointer text-red-400 active:scale-50 hover:scale-150 transition transform duration-100 ease-out">
+      <div className="cursor-pointer text-red-400 active:scale-75 hover:scale-150 transition transform duration-100 ease-out">
         <button type="submit" aria-disabled={pending}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

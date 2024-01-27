@@ -30,11 +30,21 @@ export const insertTaskSchema = createInsertSchema(tasks, {
 });
 
 export const selectTaskSchema = createSelectSchema(tasks);
+
 const taskPropSchema = selectTaskSchema.pick({
   id: true,
   title: true,
   status: true,
   updatedAt: true,
 });
-
 export type TaskListItem = z.infer<typeof taskPropSchema>;
+
+export const taskEditSchema = insertTaskSchema.pick({
+  id: true,
+  title: true,
+  description: true,
+  status: true,
+  updatedAt: true,
+  deadline: true,
+});
+export type TaskEdit = z.infer<typeof taskEditSchema>;

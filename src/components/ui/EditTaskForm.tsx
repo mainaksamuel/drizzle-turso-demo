@@ -1,13 +1,37 @@
 "use client";
 
-import { useFormStatus } from "react-dom";
+import { editTask } from "@/lib/actions";
+import { isEditingAtom, taskEditDataAtom } from "@/lib/atoms";
+import { useAtom, useSetAtom } from "jotai";
+import { ChangeEvent } from "react";
+import { useFormState, useFormStatus } from "react-dom";
+
+const initialState = {
+  message: "",
+};
 
 export default function EditTaskForm() {
+  const [state, formAction] = useFormState(editTask, initialState);
   const { pending } = useFormStatus();
+
+  const setIsEditing = useSetAtom(isEditingAtom);
+  const [taskEditData, setTaskEditValue] = useAtom(taskEditDataAtom);
+
+  const handleDataChange = (e: ChangeEvent<HTMLDataElement>) => {
+    setTaskEditValue((taskEdit) => ({
+      ...taskEdit,
+      [`${e.target.id}`]: `${e.target.value}`,
+    }));
+  };
+
+  const handleSubmit = () => {
+    setIsEditing(false);
+  };
 
   return (
     <>
-      <form className="w-full">
+      <form className="w-full" action={formAction} onSubmit={handleSubmit}>
+        <input name="task" type="hidden" value={taskEditData.id} />
         <div className="flex-1 flex-col space-y-4 border-2 border-gray-400 p-2 rounded-xl mb-2">
           <div className="py-2 border-b-2">Edit Task</div>
           <div className="flex flex-col md:flex-row md:justify-between">
@@ -18,10 +42,12 @@ export default function EditTaskForm() {
               name="title"
               id="title"
               type="text"
+              value={taskEditData.title}
               required
               minLength={2}
               maxLength={25}
-              className="rounded-md text-black flex-grow p-2"
+              className="rounded-md text-black flex-grow p-2 md:w-2/3"
+              onChange={handleDataChange}
             />
           </div>
 
@@ -33,8 +59,10 @@ export default function EditTaskForm() {
               cols={20}
               id="description"
               name="description"
+              value={taskEditData.description ?? undefined}
               rows={4}
               className="rounded-md text-black flex-grow p-2"
+              onChange={handleDataChange}
             ></textarea>
           </div>
 
@@ -46,7 +74,8 @@ export default function EditTaskForm() {
               id="status"
               name="status"
               required
-              className="text-black rounded-md flex-grow p-2"
+              className="text-black rounded-md flex-grow p-2 md:2/3"
+              onChange={handleDataChange}
             >
               <option value="todo">To Do</option>
               <option value="inprogress">In Progress</option>
@@ -63,9 +92,15 @@ export default function EditTaskForm() {
               name="deadline"
               id="deadline"
               type="date"
-              className="rounded-md text-black flex-grow p-2"
+              value={taskEditData.deadline ?? undefined}
+              className="rounded-md text-black flex-grow p-2 md:2/3"
+              onChange={handleDataChange}
             />
           </div>
+
+          <p aria-live="polite" className="sr-only" role="status">
+            {state?.message}
+          </p>
 
           <button
             type="submit"

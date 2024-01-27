@@ -1,7 +1,7 @@
 "use server";
 
-import { deleteTask, insertTask } from "@/data/tasks";
-import { insertTaskSchema } from "@/db/schema/tasks";
+import { deleteTask, insertTask, updateTask } from "@/data/tasks";
+import { insertTaskSchema, taskEditSchema } from "@/db/schema/tasks";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -21,10 +21,24 @@ export async function addTask(_prevState: any, formData: FormData) {
   }
 }
 
-export async function editTask(formData: FormData) {
-  formData.forEach((value, field) => {
-    console.log(`${field} := ${value}`);
-  });
+export async function editTask(_prevState: any, formData: FormData) {
+  try {
+    const data = taskEditSchema.parse({
+      id: Number(formData.get("task")),
+      title: formData.get("title"),
+      description: formData.get("description"),
+      status: formData.get("status"),
+      deadline: formData.get("deadline"),
+    });
+
+    const updatedTask = await updateTask(data);
+    revalidatePath("/");
+
+    return { message: `Updated task ${updatedTask[0].updatedTitle}` };
+  } catch (e: any) {
+    // console.log(`Updated tasks: `, e);
+    return { message: `Could not add update task` };
+  }
 }
 
 export async function removeTask(_prevState: any, formData: FormData) {

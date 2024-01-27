@@ -1,14 +1,29 @@
 "use client";
 
-export default function EditButton({ taskId }: { taskId: number }) {
+import { TaskListItem } from "@/db/schema/tasks";
+import { isEditingAtom, taskEditDataAtom } from "@/lib/atoms";
+import { useSetAtom } from "jotai";
+
+export default function EditButton({ task }: { task: TaskListItem }) {
+  const setIsEditing = useSetAtom(isEditingAtom);
+  const setTaskEditData = useSetAtom(taskEditDataAtom);
+
   const handleEdit = () => {
-    console.log("TODO: redirect to edit task");
+    setTaskEditData((taskEdit) => ({
+      ...taskEdit,
+      id: task.id,
+      title: task.title,
+      status: task.status,
+      updatedAt: task.updatedAt,
+    }));
+
+    setIsEditing(true);
   };
 
   return (
     <div
       onClick={handleEdit}
-      className="cursor-pointer text-teal-400 active:scale-50 hover:scale-150 transition transform duration-100 ease-out"
+      className="cursor-pointer text-teal-400 active:scale-75 hover:scale-150 transition transform duration-100 ease-out"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
