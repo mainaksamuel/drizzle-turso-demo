@@ -92,10 +92,24 @@ export default function EditTaskForm() {
               className="text-black rounded-md flex-grow p-2 md:2/3"
               onChange={handleDataChange}
             >
-              <option value="todo">To Do</option>
-              <option value="inprogress">In Progress</option>
-              <option value="done">Done</option>
-              <option value="overdue">Overdue</option>
+              <option selected={taskEditData.status === "todo"} value="todo">
+                To Do
+              </option>
+              <option
+                selected={taskEditData.status === "inprogress"}
+                value="inprogress"
+              >
+                In Progress
+              </option>
+              <option selected={taskEditData.status === "done"} value="done">
+                Done
+              </option>
+              <option
+                selected={taskEditData.status === "overdue"}
+                value="overdue"
+              >
+                Overdue
+              </option>
             </select>
           </div>
 
